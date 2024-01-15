@@ -9,7 +9,7 @@ const App = () => {
   const token = "patNv60QicEg7j2xQ.0febebed4ce5e961b9bd33bca01fec98e0b5295ce81fcf3be091c29297c78c01"
 
   // This is the API endpoint base URL
-  const apiUrl = 'https://cors-anywhere.herokuapp.com/' + "http://18.119.84.34";
+  const apiUrl = 'https://proxy.cors.sh/' + "http://18.119.84.34";
 
   const [partitionNames, setPartitionNames] = useState([])
   const [appState, setAppState] = useState("partition")
@@ -81,22 +81,27 @@ const App = () => {
   // Put request to /document with the partition name and content
   const putFile = () => {
     const url = `${apiUrl}/document`
-    const data = new FormData()
-    const partitionName = `${inputObject.partitionName}:${inputObject.file.name}`
-    data.append('content', inputObject.file)
-    data.append('partition_name', partitionName)
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    }
-    axios.put(url, data, config)
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      const partitionName = `${inputObject.partitionName}:${inputObject.file.name}`
+      const data = {
+        "content": content,
+        "partition_name": partitionName
+      }
+      const config = {
+        'x-cors-api-key': 'temp_03b43894fcae11b27ce3052e4ede4a61'
+      }
+      axios.put(url, data, config)
       .then(res => {
+        console.log("sdlkfjlksdjfksjdfklj")
         apiResponseMessage("Successfully uploaded file.")
         fetchListFromAirtable()
         addPartition()
       })
       .catch(err => setApiResponseMessage(err))
+    }
+    reader.readAsText(inputObject.file);
   }
 
   // API call to the /context endpoint
