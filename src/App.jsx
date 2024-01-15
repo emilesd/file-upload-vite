@@ -9,7 +9,7 @@ const App = () => {
   const token = "patNv60QicEg7j2xQ.0febebed4ce5e961b9bd33bca01fec98e0b5295ce81fcf3be091c29297c78c01"
 
   // This is the API endpoint base URL
-  const apiUrl = "http://18.119.84.34"
+  const apiUrl = 'https://cors-anywhere.herokuapp.com/' + "http://18.119.84.34";
 
   const [partitionNames, setPartitionNames] = useState([])
   const [appState, setAppState] = useState("partition")
